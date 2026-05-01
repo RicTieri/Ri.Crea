@@ -167,32 +167,43 @@ const services = [
   },
 ]
 
-const particles = [
-  { x: 7, y: 14, size: 7, color: 'cyan', drift: 28, delay: '0s' },
-  { x: 18, y: 38, size: 4, color: 'pink', drift: -34, delay: '-1.4s' },
-  { x: 32, y: 24, size: 5, color: 'orange', drift: 22, delay: '-2.2s' },
-  { x: 47, y: 58, size: 8, color: 'cyan', drift: -26, delay: '-0.8s' },
-  { x: 63, y: 18, size: 4, color: 'pink', drift: 32, delay: '-3s' },
-  { x: 78, y: 44, size: 6, color: 'orange', drift: -22, delay: '-1.8s' },
-  { x: 88, y: 70, size: 5, color: 'cyan', drift: 30, delay: '-2.7s' },
-  { x: 12, y: 76, size: 9, color: 'pink', drift: -28, delay: '-0.4s' },
-  { x: 38, y: 84, size: 4, color: 'orange', drift: 26, delay: '-3.5s' },
-  { x: 57, y: 73, size: 7, color: 'cyan', drift: -30, delay: '-1.1s' },
-  { x: 72, y: 88, size: 4, color: 'pink', drift: 24, delay: '-2.9s' },
-  { x: 94, y: 28, size: 8, color: 'orange', drift: -32, delay: '-1.7s' },
-]
+const particles = () => {
+  const allParticles = [
+    { x: 7, y: 14, size: 7, color: 'cyan', drift: 28, delay: '0s' },
+    { x: 18, y: 38, size: 4, color: 'pink', drift: -34, delay: '-1.4s' },
+    { x: 32, y: 24, size: 5, color: 'orange', drift: 22, delay: '-2.2s' },
+    { x: 47, y: 58, size: 8, color: 'cyan', drift: -26, delay: '-0.8s' },
+    { x: 63, y: 18, size: 4, color: 'pink', drift: 32, delay: '-3s' },
+    { x: 78, y: 44, size: 6, color: 'orange', drift: -22, delay: '-1.8s' },
+    { x: 88, y: 70, size: 5, color: 'cyan', drift: 30, delay: '-2.7s' },
+    { x: 12, y: 76, size: 9, color: 'pink', drift: -28, delay: '-0.4s' },
+    { x: 38, y: 84, size: 4, color: 'orange', drift: 26, delay: '-3.5s' },
+    { x: 57, y: 73, size: 7, color: 'cyan', drift: -30, delay: '-1.1s' },
+    { x: 72, y: 88, size: 4, color: 'pink', drift: 24, delay: '-2.9s' },
+    { x: 94, y: 28, size: 8, color: 'orange', drift: -32, delay: '-1.7s' },
+  ]
+  
+  if (typeof window !== 'undefined' && window.innerWidth <= 768) {
+    return allParticles.slice(0, 4)
+  }
+  return allParticles
+}
 
 const selectedServiceSlug = ref('')
 
 let frame = 0
 
+const isMobile = () => window.innerWidth <= 768
+
 const updateScrollEffects = () => {
   frame = 0
-  document.documentElement.style.setProperty('--scroll-shift', `${window.scrollY * 0.08}px`)
+  if (!isMobile()) {
+    document.documentElement.style.setProperty('--scroll-shift', `${window.scrollY * 0.08}px`)
+  }
 }
 
 const onScroll = () => {
-  if (!frame) {
+  if (!frame && !isMobile()) {
     frame = window.requestAnimationFrame(updateScrollEffects)
   }
 }
@@ -223,7 +234,7 @@ onUnmounted(() => {
         key="home"
         :gallery-items="galleryItems"
         :services="services"
-        :particles="particles"
+        :particles="particles()"
         @open-gallery="openGalleryFromHome"
         @open-service="(slug) => { selectedServiceSlug = slug }"
       />

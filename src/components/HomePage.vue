@@ -18,6 +18,13 @@ onMounted(() => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add('in-view')
+          
+          // Lazy load background images
+          const bgImage = entry.target.getAttribute('data-bg-image')
+          if (bgImage) {
+            ;(entry.target as HTMLElement).style.backgroundImage = `url(${bgImage})`
+          }
+          
           observer.unobserve(entry.target)
         }
       })
@@ -28,7 +35,7 @@ onMounted(() => {
     }
   )
 
-  document.querySelectorAll('.reveal, .editorial-card, .service-card').forEach((el) => {
+  document.querySelectorAll('.reveal, .editorial-card, .service-card, [data-bg-image]').forEach((el) => {
     observer.observe(el)
   })
 })
@@ -58,7 +65,7 @@ onMounted(() => {
       <div class="hero-content">
         <div class="hero-text">
           <div class="hero-logo-wrap" aria-label="Ri.Crea">
-            <img class="hero-logo" src="/logo.png" alt="" />
+            <img class="hero-logo" src="/logo.png" alt="" loading="lazy" />
           </div>
           <span class="eyebrow">Portfolio fotografico per brand e attività</span>
           <h1>Fotografia per<br>aziende e locali.</h1>
@@ -78,7 +85,7 @@ onMounted(() => {
             <span>Ri.Crea</span>
             <strong>Visual Stories</strong>
           </div>
-          <div class="image-layer layer-1"></div>
+          <div class="image-layer layer-1" data-bg-image="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=2200&q=86"></div>
           <div class="image-layer layer-2"></div>
           <div class="image-layer layer-3"></div>
           <div class="hero-caption">
@@ -119,7 +126,7 @@ onMounted(() => {
         </div>
         <div class="editorial-grid">
           <article v-for="(item, index) in galleryItems" :key="item.title" class="editorial-card">
-            <div class="editorial-image" :style="{ backgroundImage: `url(${item.image})` }"></div>
+            <div class="editorial-image" :data-bg-image="item.image"></div>
             <span class="work-index">{{ String(index + 1).padStart(2, '0') }}</span>
             <div class="editorial-copy">
               <span class="eyebrow">{{ item.category }}</span>
