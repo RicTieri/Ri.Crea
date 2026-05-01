@@ -184,7 +184,7 @@ const particles = () => {
   ]
   
   if (typeof window !== 'undefined' && window.innerWidth <= 768) {
-    return allParticles.slice(0, 4)
+    return allParticles.slice(0, 2) // Solo 2 particelle su mobile
   }
   return allParticles
 }
