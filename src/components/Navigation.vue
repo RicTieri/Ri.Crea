@@ -113,6 +113,7 @@ onUnmounted(() => {
   z-index: 100;
 
   backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
@@ -256,14 +257,34 @@ onUnmounted(() => {
     justify-content: center;
     gap: 24px;
     padding: 120px 28px 32px;
-    background: rgba(5, 5, 6, 0.96);
-    backdrop-filter: blur(24px);
+    background: rgba(5, 5, 6, 0.98);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     transform: translateY(-100%);
     opacity: 0;
     pointer-events: none;
     transition: transform 0.3s ease, opacity 0.3s ease;
     z-index: 150;
     height: 100vh;
+  }
+
+  .site-nav {
+    background: rgba(5, 5, 6, 0.96);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .nav-logo::after,
+  .nav-logo img {
+    animation: none;
+  }
+
+  .nav-logo::after {
+    display: none;
+  }
+
+  .nav-logo img {
+    clip-path: inset(0 0 0 0);
   }
 
   .nav-menu.is-open {

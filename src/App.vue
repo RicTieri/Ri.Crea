@@ -120,7 +120,7 @@ const navigateTo = (page: string) => {
     selectedGallerySlug.value = ''
     window.location.hash = page
   }
-  window.scrollTo({ top: 0, behavior: 'smooth' })
+  window.scrollTo({ top: 0, behavior: isMobile() ? 'auto' : 'smooth' })
 }
 
 const openGalleryFromHome = (slug: string) => {
@@ -211,7 +211,9 @@ const onScroll = () => {
 onMounted(() => {
   syncRouteFromHash()
   updateScrollEffects()
-  window.addEventListener('scroll', onScroll, { passive: true })
+  if (!isMobile()) {
+    window.addEventListener('scroll', onScroll, { passive: true })
+  }
   window.addEventListener('hashchange', syncRouteFromHash)
 })
 
